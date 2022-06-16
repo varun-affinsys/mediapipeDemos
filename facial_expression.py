@@ -22,10 +22,10 @@ def main():
 
     if fast_model:
         # from https://github.com/zengqunzhao/EfficientFace
-        model_path = "models/efficient_face_model.tflite"
+        model_path = "model/efficient_face_model.tflite"
     else:
         # from https://github.com/zengqunzhao/EfficientFace
-        model_path = "models/dlg_model.tflite"
+        model_path = "model/dlg_model.tflite"
 
     with mp_face_detection.FaceDetection(
         model_selection=0, min_detection_confidence=0.5

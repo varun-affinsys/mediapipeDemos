@@ -7,6 +7,21 @@ import numpy as np
 from custom.iris_lm_depth import from_landmarks_to_depth
 from videosource import FileSource, WebcamSource
 
+"""
+
+MediaPipe Iris is able to determine the metric distance of a subject to the camera with less than 10% error, 
+without requiring any specialized hardware. This is done by relying on the fact that the horizontal iris diameter of 
+the human eye remains roughly constant at 11.7±0.5 mm across a wide population, along with some simple geometric 
+arguments. 
+
+The depth estimation uses the intercept theorem, where it assumes that the real world iris plane of the user is 
+parallel to the screen/camera plane (in other words: having linear dependent normal vectors). With a mobile device 
+where the camera is very close to the screen and on the same plane, and the user's iris faces the camera/screen head 
+on, this assumption is typically correct.
+
+"""
+
+
 mp_face_mesh = mp.solutions.face_mesh
 
 points_idx = [33, 133, 362, 263, 61, 291, 199]

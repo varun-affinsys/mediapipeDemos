@@ -101,7 +101,7 @@ def main():
                     mp_drawing.draw_landmarks(
                         image=frame,
                         landmark_list=face_landmarks,
-                        connections=mp_face_mesh.FACE_CONNECTIONS,
+                        connections=mp_face_mesh.FACEMESH_CONTOURS,
                         landmark_drawing_spec=drawing_spec,
                         connection_drawing_spec=drawing_spec,
                     )
@@ -118,7 +118,7 @@ def main():
 
                 nose_tip_2D, nose_tip_2D_extended = nose_pointer2D.squeeze().astype(int)
                 frame = cv2.line(
-                    frame, nose_tip_2D, nose_tip_2D_extended, (255, 0, 0), 2
+                    frame, tuple(nose_tip_2D), tuple(nose_tip_2D_extended), (255, 0, 0), 2
                 )
 
             source.show(frame)

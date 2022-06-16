@@ -21,7 +21,9 @@ def main():
             mp_drawing.draw_landmarks(
                 frame,
                 results.face_landmarks,
-                mp_holistic.FACE_CONNECTIONS,
+                #  If you want just the mesh of the face with Tesselation, it's now mp_holistic.FACEMESH_TESSELATION
+                #  If you want just the outlines of the face, it's now mp_holistic.FACEMESH_CONTOURS
+                mp_holistic.FACEMESH_CONTOURS,
                 landmark_drawing_spec=drawing_spec,
                 connection_drawing_spec=drawing_spec,
             )
