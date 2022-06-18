@@ -23,6 +23,7 @@ points_idx.sort()
 # points_idx = list(range(0,468)); points_idx[0:2] = points_idx[0:2:-1];
 
 frame_height, frame_width, channels = (720, 1280, 3)
+# frame_height, frame_width, channels = (1920, 1080, 3)
 
 # pseudo camera internals
 focal_length = frame_width
@@ -120,7 +121,17 @@ def main():
                 frame = cv2.line(
                     frame, tuple(nose_tip_2D), tuple(nose_tip_2D_extended), (255, 0, 0), 2
                 )
-
+                # -------------------------------------- For estimating if user is looking UP or DOWN.
+                p1 = tuple(nose_tip_2D)[1]
+                p2 = tuple(nose_tip_2D_extended)[1]
+                distance = int(p1 - p2)
+                if distance > 100:
+                    print("Looking UP")
+                elif distance < -100:
+                    print("Looking DOWN")
+                else:
+                    print("Normal")
+                # ---------------------------------------
             source.show(frame)
 
 

@@ -63,6 +63,8 @@ class WebcamSource(VideoSource):
         camera_id=0,
         width=1280,
         height=720,
+        # width=1080,
+        # height=1920,
         fps=30,
         autofocus=0,
         absolute_focus=75,
