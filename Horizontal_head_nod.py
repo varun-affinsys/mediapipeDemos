@@ -104,7 +104,7 @@ class Headmove:
 
         # Initial liveliness status
         self.liveness = {'left_head_move': self.FLAG_L, 'right_head_move': self.FLAG_R,
-                         'status_flag': self.STATUS_FLAG, 'v_head_nod_count': self.head_nod_count}
+                         'status_flag': self.STATUS_FLAG, 'h_head_nod_count': self.head_nod_count}
 
     def status_func(self, distance):
         if self.THRES_RIGHT > distance > self.THRES_LEFT:
@@ -126,12 +126,14 @@ class Headmove:
         # Saving the first frame for face verification
         framepath = str(self.PATH + self.dt_string + ".jpg")
         cv2.imwrite(framepath, old_frame)
-        logger.info(f"frame saved locally at: {framepath}")
+        # logger.info(f"frame saved locally at: {framepath}")
+        print(f"frame saved locally at: {framepath}")
         return framepath
 
     def liveliness_check(self):
 
-        logger.debug("Liveliness check started")
+        # logger.debug("Liveliness check started")
+        print("Liveliness check started")
         # Creating a text text_output_file
         filepath = str(self.PATH + self.dt_string + "_video_to_text" + ".txt")
         text_output_file = open(filepath, "w+")
@@ -163,6 +165,13 @@ class Headmove:
 
         # Mediapipe Utils
         mp_face_mesh = mp.solutions.face_mesh
+
+        # Saving the VideoFrame
+        frame_width = int(cap.get(3))
+        frame_height = int(cap.get(4))
+        size = (frame_width, frame_height)
+        result = cv2.VideoWriter(str(self.PATH + self.videopath.split('.')[0] +
+                                     '_video_viz.avi'), cv2.VideoWriter_fourcc(*'MJPG'), self.VID_FPS, size)
 
         # Finding the first frame with mediapipe and getting the coordinates for nose tip and bottom nose center
         with mp_face_mesh.FaceMesh(
@@ -250,7 +259,7 @@ class Headmove:
                             image = cv2.cvtColor(cv2.flip(frame, 1), cv2.COLOR_BGR2RGB)
 
                             # Creating the copy of the frame
-                            # image1 = image
+                            image1 = image
 
                             # To improve performance, optionally mark the image as not writeable to pass by reference.
                             image.flags.writeable = False
@@ -317,7 +326,7 @@ class Headmove:
                                          "OF_Error": err.flatten()}, ignore_index=True)
 
                         # Saving the videofile
-                        # result.write(cv2.cvtColor(image1, cv2.COLOR_BGR2RGB))
+                        result.write(cv2.cvtColor(image1, cv2.COLOR_BGR2RGB))
 
                         # Breaking the frame
                         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -329,7 +338,8 @@ class Headmove:
                             optical_points_old = points_new.reshape(-1, 1, 2)
                             continue
                         else:
-                            logger.debug("Liveliness failed due to discontinuity")
+                            # logger.debug("Liveliness failed due to discontinuity")
+                            print("Liveliness failed due to discontinuity")
                             break
 
                     # Head Nod condition
@@ -343,7 +353,7 @@ class Headmove:
 
                     # Exit condition
                     self.liveness = {"left_head_move": int(self.FLAG_L), "right_head_move": int(self.FLAG_R),
-                                     "status_flag": self.STATUS_FLAG, "v_head_nod_count": self.head_nod_count}
+                                     "status_flag": self.STATUS_FLAG, "h_head_nod_count": self.head_nod_count}
 
                     # Saving the Optical flow attributes and other final information in a text file
                     text_output_file.write(str(self.liveness) + "\n")
@@ -362,13 +372,18 @@ class Headmove:
             # Exit screen
             cap.release()
             cv2.destroyAllWindows()
-            logger.debug(f"Liveliness: {self.liveness}")
-            logger.debug("Liveliness check completed")
+            result.release()
+            # logger.debug(f"Liveliness: {self.liveness}")
+            # logger.debug("Liveliness check completed")
+            print(f"Liveliness: {self.liveness}")
+            print("Liveliness check completed")
             return self.liveness
 
 
 if __name__ == "__main__":
     # Input file location of the video
-    test = Headmove(videopath="Video.mp4")
+    # test = Headmove(videopath="Video.mp4")
+    test = Headmove(videopath="hhn.mp4")
     test.liveliness_check()
-    logger.debug("Videoliveliness Done")
+    # logger.debug("Videoliveliness Done")
+    print("Videoliveliness Done")

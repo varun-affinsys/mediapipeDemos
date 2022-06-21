@@ -118,7 +118,8 @@ class Headmove:
 
     def liveliness_check(self):
 
-        logger.debug("Liveliness check started")
+        # logger.debug("Liveliness check started")
+        print("Liveliness check started")
         # Creating a text text_output_file
         filepath = str(self.PATH + self.dt_string + "_video_to_text" + ".txt")
         text_output_file = open(filepath, "w+")
@@ -449,7 +450,7 @@ class Headmove:
                             optical_points_old = points_new.reshape(-1, 1, 2)
                             continue
                         else:
-                            logger.debug("Liveliness failed due to discontinuity")
+                            print("Liveliness failed due to discontinuity")
                             break
 
                     # Head Nod condition
@@ -483,14 +484,14 @@ class Headmove:
             cap.release()
             result.release()
             cv2.destroyAllWindows()
-            logger.debug(f"Liveliness: {self.liveness}")
-            logger.debug("Liveliness check completed")
+            print(f"Liveliness: {self.liveness}")
+            print("Liveliness check completed")
             return self.liveness
 
 
 if __name__ == "__main__":
     # Input file location of the video
     # test = Headmove(videopath="vhn.mp4")
-    test = Headmove(videopath="vhn.mp4")
+    test = Headmove(videopath="Flow_cut.mp4")
     test.liveliness_check()
-    logger.debug("Videoliveliness Done")
+    print("Videoliveliness Done")
