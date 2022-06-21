@@ -1,9 +1,4 @@
-import random
-
 import cv2
-import os
-import traceback
-from timeit import default_timer as timer
 from datetime import datetime
 from pathlib import Path
 import random
@@ -213,7 +208,7 @@ class FingerCount:
 
 if __name__ == "__main__":
     # Input file location of the video
-    test = FingerCount(videopath="5.2.mp4")
+    test = FingerCount(videopath="5.mp4")
     # test = FingerCount(videopath="error.mp4")
     # test = RightShow(videopath=0)
     test.liveliness_check()
