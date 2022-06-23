@@ -107,8 +107,8 @@ def left_hand_show():
     instructions = "Show Left Hand"
     videopath = videorecorder(instructions)
     time.sleep(5)
-    Lhand_obj = LeftShow(videopath)
-    lhand_var = Lhand_obj.liveliness_check()
+    lhand_obj = LeftShow(videopath)
+    lhand_var = lhand_obj.liveliness_check()
     print("Left Hand Show Over")
     return lhand_var
 
