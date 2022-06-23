@@ -20,7 +20,7 @@ class OpenMouth:
     # Parameters and thresholds
     # is_facever=False
 
-    def __init__(self, videopath):
+    def __init__(self, videopath, x_opens):
         
         # Video file location
         self.videopath = videopath
@@ -42,7 +42,7 @@ class OpenMouth:
         self.MIN_DETECTION_CONFIDENCE = 0.5
         self.MIN_TRACKING_CONFIDENCE = 0.5
 
-        # Setting up the initial parameters for left and right movement detection
+        # Setting up the initial parameters for Open mouth detection
         # Initial gesture is set to false
         self.GESTURE = False
 
@@ -51,8 +51,7 @@ class OpenMouth:
         self.FLAG_OPEN = 0
 
         # Random Count
-        self.RANDOM_COUNT = 2
-        # self.RANDOM_COUNT = random.randint(1, 3)
+        self.RANDOM_COUNT = x_opens
 
         # number of frames a gesture is displayed (shown)
         self.GESTURE_SHOW = 15
@@ -65,8 +64,8 @@ class OpenMouth:
         self.STATUS_FLAG = "FAIL"
 
         # Saving the record time
-        now = datetime.now()
-        self.dt_string = now.strftime("_%d-%m-%Y-%H-%M-%S")
+        # now = datetime.now()
+        # self.dt_string = now.strftime("_%d-%m-%Y-%H-%M-%S")
 
         # Initial liveliness status
         self.liveness = {'flag_open': self.FLAG_OPEN, 'status_flag': self.STATUS_FLAG}
@@ -95,7 +94,8 @@ class OpenMouth:
 
         print("Open Mouth Check Started")
         # Creating a text text_output_file
-        filepath = str(self.PATH + self.dt_string + "_video_to_text" + ".txt")
+        # filepath = str(self.PATH + self.dt_string + "_video_to_text" + ".txt")
+        filepath = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + "_video_to_text" + ".txt")
         text_output_file = open(filepath, "w+")
 
         # Video Capture
@@ -129,7 +129,7 @@ class OpenMouth:
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
         size = (frame_width, frame_height)
-        result = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit(".", 1)[0] +
+        result = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] +
                                      '_video_viz.avi'), cv2.VideoWriter_fourcc(*'MJPG'), self.VID_FPS, size)
 
         # Finding the first frame with mediapipe and getting the coordinates for nose tip and bottom nose center
@@ -243,7 +243,7 @@ class OpenMouth:
                                     # Distance function to find the distance between points
                                     dist = ((relative_x2 - relative_x1)**2 + (relative_y2 - relative_y1)**2)**0.5
 
-                                    # Counter for Right side detection, if threshold is passed, counter increases
+                                    # Counter for Open mouth detection, if threshold is passed, counter increases
                                     if dist > self.THRES_OPEN:
                                         self.GESTURE = False
                                         self.COUNTER_OPEN += 1
@@ -305,7 +305,8 @@ class OpenMouth:
                     final_dataframe = dataframe
                     final_dataframe['FrameNo'] = frame_list
                     final_dataframe['Status'] = final_dataframe.apply(lambda x: self.status_func(x['Distance']), axis=1)
-                    outfile = str(self.PATH + self.videopath.rsplit(".", 1)[0] + self.dt_string + '_outfile_csv.csv')
+                    # removed self.dt_string from filepath
+                    outfile = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_outfile_csv.csv')
                     final_dataframe.to_csv(outfile, index=False)
 
             # Exit screen
@@ -317,8 +318,8 @@ class OpenMouth:
             return self.liveness
 
 
-if __name__ == "__main__":
-    # Input file location of the video
-    test = OpenMouth(videopath="open_mouth.mp4")
-    test.liveliness_check()
-    print("Open Mouth Check Done")
+# if __name__ == "__main__":
+#     # Input file location of the video
+#     test = OpenMouth(videopath="open_mouth.mp4")
+#     test.liveliness_check()
+#     print("Open Mouth Check Done")

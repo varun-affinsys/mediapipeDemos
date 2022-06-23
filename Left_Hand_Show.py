@@ -40,9 +40,9 @@ class LeftShow:
         # Initial status for status_flag
         self.STATUS_FLAG = "FAIL"
 
-        # Saving the record time
-        now = datetime.now()
-        self.dt_string = now.strftime("_%d-%m-%Y-%H-%M-%S")
+        # # Saving the record time
+        # now = datetime.now()
+        # self.dt_string = now.strftime("_%d-%m-%Y-%H-%M-%S")
 
         # Initial left_hand_count status
         self.left_hand_count = {'status_flag': self.STATUS_FLAG, 'Left_hand_count': self.COUNT_SHOW}
@@ -58,7 +58,7 @@ class LeftShow:
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
         size = (frame_width, frame_height)
-        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit(".", 1)[0] +
+        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] +
                                          '_video_viz.avi'), cv2.VideoWriter_fourcc(*'MJPG'), int(self.VID_FPS), size)
 
         # Creating the DataFrame
@@ -135,6 +135,7 @@ class LeftShow:
                                 if len(fingerlist) != 0:
                                     fingercount = fingerlist.count(1)
 
+                        # Getting the side of the hand
                         self.SIDE = "Left" if "Left" in str(results.multi_handedness[0]) else "InCorrect"
                         if fingercount == 5 and self.SIDE == "Left":
                             self.GESTURE = True
@@ -193,7 +194,8 @@ class LeftShow:
                 frame_list = [i for i in range(len(dataframe))]
                 final_dataframe = dataframe
                 final_dataframe['FrameNo'] = frame_list
-                outfile = str(self.PATH + self.videopath.rsplit(".", 1)[0] + self.dt_string + '_outfile_csv.csv')
+                # removed self.dt_string from filepath
+                outfile = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_outfile_csv.csv')
                 final_dataframe.to_csv(outfile, index=False)
 
         # Exit screen

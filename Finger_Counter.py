@@ -10,7 +10,7 @@ import pandas as pd
 
 class FingerCount:
 
-    def __init__(self, videopath):
+    def __init__(self, videopath, x_fingers):
 
         # Video file location
         self.videopath = videopath
@@ -18,7 +18,7 @@ class FingerCount:
         # FPS of saving video
         self.VID_FPS = 30.0
 
-        # Setting up the initial parameters for left and right movement detection
+        # Setting up the initial parameters for finger counts detection
         # Initial gesture is set to false
         self.GESTURE = False
 
@@ -29,8 +29,7 @@ class FingerCount:
         self.COUNT_SHOW = 0
 
         # Show Random Number
-        self.SHOW_NUMBER = 5
-        # self.SHOW_NUMBER = random.randint(1, 5)
+        self.SHOW_NUMBER = x_fingers
 
         # number of frames a gesture is displayed (shown)
         self.GESTURE_SHOW = 15
@@ -42,9 +41,9 @@ class FingerCount:
         # Initial status for status_flag
         self.STATUS_FLAG = "FAIL"
 
-        # Saving the record time
-        now = datetime.now()
-        self.dt_string = now.strftime("_%d-%m-%Y-%H-%M-%S")
+        # # Saving the record time
+        # now = datetime.now()
+        # self.dt_string = now.strftime("_%d-%m-%Y-%H-%M-%S")
 
         # Initial left_hand_count status
         self.finger_count = {'status_flag': self.STATUS_FLAG, 'fingers_count': self.fingers_count}
@@ -60,7 +59,7 @@ class FingerCount:
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
         size = (frame_width, frame_height)
-        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit(".", 1)[0] +
+        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] +
                                          '_video_viz.avi'), cv2.VideoWriter_fourcc(*'MJPG'), int(self.VID_FPS), size)
 
         # Creating the DataFrame
@@ -193,8 +192,8 @@ class FingerCount:
             frame_list = [i for i in range(len(dataframe))]
             final_dataframe = dataframe
             final_dataframe['FrameNo'] = frame_list
-            # final_dataframe['Status'] = final_dataframe.apply(lambda x: self.status_func(x['Distance']), axis=1)
-            outfile = str(self.PATH + self.videopath.rsplit(".", 1)[0] + self.dt_string + '_outfile_csv.csv')
+            # removed self.dt_string from filepath
+            outfile = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_outfile_csv.csv')
             final_dataframe.to_csv(outfile, index=False)
 
         # Exit screen
@@ -206,10 +205,9 @@ class FingerCount:
         return self.finger_count
 
 
-if __name__ == "__main__":
-    # Input file location of the video
-    test = FingerCount(videopath="5.mp4")
-    # test = FingerCount(videopath="error.mp4")
-    # test = RightShow(videopath=0)
-    test.liveliness_check()
-    print("Fingers Count Check Done")
+# if __name__ == "__main__":
+#     # Input file location of the video
+#     test = FingerCount(videopath="5.mp4")
+#     # test = FingerCount(videopath="error.mp4")
+#     test.liveliness_check()
+#     print("Fingers Count Check Done")
