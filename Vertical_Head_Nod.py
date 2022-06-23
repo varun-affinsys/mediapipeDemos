@@ -91,8 +91,8 @@ class VerticalHeadNod:
         self.GESTURE_SHOW = 15
 
         # storing path of the output files
-        Path('videoliveliness_files').mkdir(exist_ok=True, parents=True)
-        self.PATH = "videoliveliness_files/"
+        Path('videoliveliness_files_vnod').mkdir(exist_ok=True, parents=True)
+        self.PATH = "videoliveliness_files_vnod/"
 
         # Initial status for status_flag
         self.STATUS_FLAG = "FAIL"
