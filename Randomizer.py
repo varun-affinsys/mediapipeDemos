@@ -8,6 +8,7 @@ import random
 import cv2
 from datetime import datetime
 import time
+from time import perf_counter
 
 
 def videorecorder(instructions):
@@ -93,7 +94,7 @@ def open_mouth():
 
 def right_hand_show():
     print("Right Hand Show Called")
-    instructions = "Show Right Hand"
+    instructions = "Show Right Hand & Drop"
     videopath = videorecorder(instructions)
     time.sleep(5)
     rhand_obj = RightShow(videopath)
@@ -104,7 +105,7 @@ def right_hand_show():
 
 def left_hand_show():
     print("Left Hand Show Called")
-    instructions = "Show Left Hand"
+    instructions = "Show Left Hand & Drop"
     videopath = videorecorder(instructions)
     time.sleep(5)
     lhand_obj = LeftShow(videopath)
@@ -116,8 +117,11 @@ def left_hand_show():
 my_list = [horizontal_head_nod, vertical_head_nod, finger_count, open_mouth, right_hand_show, left_hand_show]
 
 random_actions = random.sample(my_list, 2)
+t1_start = perf_counter()
 for random_action in random_actions:
     random_action()
+t1_stop = perf_counter()
+print("Elapsed time during the whole program in seconds:", t1_stop - t1_start)
 
 # random.choice(my_list)()
 # print(var)
