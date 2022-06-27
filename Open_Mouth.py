@@ -95,7 +95,7 @@ class OpenMouth:
         print("Open Mouth Check Started")
         # Creating a text text_output_file
         # filepath = str(self.PATH + self.dt_string + "_video_to_text" + ".txt")
-        filepath = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + "_video_to_text" + ".txt")
+        filepath = str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] + "_video_to_text" + ".txt")
         text_output_file = open(filepath, "w+")
 
         # Video Capture
@@ -129,7 +129,7 @@ class OpenMouth:
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
         size = (frame_width, frame_height)
-        result = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] +
+        result = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] +
                                      '_video_viz.avi'), cv2.VideoWriter_fourcc(*'MJPG'), self.VID_FPS, size)
 
         # Finding the first frame with mediapipe and getting the coordinates for nose tip and bottom nose center
@@ -306,7 +306,7 @@ class OpenMouth:
                     final_dataframe['FrameNo'] = frame_list
                     final_dataframe['Status'] = final_dataframe.apply(lambda x: self.status_func(x['Distance']), axis=1)
                     # removed self.dt_string from filepath
-                    outfile = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_outfile_csv.csv')
+                    outfile = str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] + '_outfile_csv.csv')
                     final_dataframe.to_csv(outfile, index=False)
 
             # Exit screen
@@ -318,8 +318,9 @@ class OpenMouth:
             return self.liveness
 
 
-# if __name__ == "__main__":
-#     # Input file location of the video
-#     test = OpenMouth(videopath="open_mouth.mp4")
-#     test.liveliness_check()
-#     print("Open Mouth Check Done")
+if __name__ == "__main__":
+    # Input file location of the video
+    # test = OpenMouth(videopath="speed_test_all/open-mouth_2.mp4", x_opens=2)
+    test = OpenMouth(videopath="resolution_test/open-mouth_1920_1080.mp4", x_opens=2)
+    test.liveliness_check()
+    print("Open Mouth Check Done")

@@ -58,7 +58,7 @@ class RightShow:
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
         size = (frame_width, frame_height)
-        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_video_viz.avi'),
+        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] + '_video_viz.avi'),
                                      cv2.VideoWriter_fourcc(*'MJPG'), int(self.VID_FPS), size)
 
         # Creating the DataFrame
@@ -195,7 +195,7 @@ class RightShow:
                 final_dataframe = dataframe
                 final_dataframe['FrameNo'] = frame_list
                 # removed self.dt_string from filepath
-                outfile = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_outfile_csv.csv')
+                outfile = str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] + '_outfile_csv.csv')
                 final_dataframe.to_csv(outfile, index=False)
 
         # Exit screen
@@ -207,10 +207,11 @@ class RightShow:
         return self.Right_count
 
 
-# if __name__ == "__main__":
-#     # Input file location of the video
-#     # test = RightShow(videopath="right_hand.mp4")
-#     test = RightShow(videopath="output.avi")
-#     # test = RightShow(videopath=0)
-#     test.liveliness_check()
-#     print("Right Hand Count Check Done")
+if __name__ == "__main__":
+    # Input file location of the video
+    # test = RightShow(videopath="right_hand.mp4")
+    # test = RightShow(videopath="speed_test_all/right-hand_2.mp4")
+    test = RightShow(videopath="resolution_test/right-hand_1500_1125.mp4")
+    # test = RightShow(videopath=0)
+    test.liveliness_check()
+    print("Right Hand Count Check Done")

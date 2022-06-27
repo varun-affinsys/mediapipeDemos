@@ -59,7 +59,7 @@ class FingerCount:
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
         size = (frame_width, frame_height)
-        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] +
+        video_save = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] +
                                          '_video_viz.avi'), cv2.VideoWriter_fourcc(*'MJPG'), int(self.VID_FPS), size)
 
         # Creating the DataFrame
@@ -193,7 +193,7 @@ class FingerCount:
             final_dataframe = dataframe
             final_dataframe['FrameNo'] = frame_list
             # removed self.dt_string from filepath
-            outfile = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_outfile_csv.csv')
+            outfile = str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] + '_outfile_csv.csv')
             final_dataframe.to_csv(outfile, index=False)
 
         # Exit screen
@@ -205,9 +205,10 @@ class FingerCount:
         return self.finger_count
 
 
-# if __name__ == "__main__":
-#     # Input file location of the video
-#     test = FingerCount(videopath="5.mp4")
-#     # test = FingerCount(videopath="error.mp4")
-#     test.liveliness_check()
-#     print("Fingers Count Check Done")
+if __name__ == "__main__":
+    # Input file location of the video
+    # test = FingerCount(videopath="speed_test_all/5_2.mp4", x_fingers=5)
+    test = FingerCount(videopath="resolution_test/5_1920_1080.mp4", x_fingers=5)
+    # test = FingerCount(videopath="error.mp4")
+    test.liveliness_check()
+    print("Fingers Count Check Done")

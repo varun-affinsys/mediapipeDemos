@@ -121,7 +121,7 @@ class VerticalHeadNod:
         # logger.debug("Liveliness check started")
         print("Liveliness check started")
         # Creating a text text_output_file
-        filepath = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + "_video_to_text" + ".txt")
+        filepath = str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] + "_video_to_text" + ".txt")
         text_output_file = open(filepath, "w+")
 
         # Head pose essentials
@@ -197,7 +197,7 @@ class VerticalHeadNod:
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
         size = (frame_width, frame_height)
-        result = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] +
+        result = cv2.VideoWriter(str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] +
                                      '_video_viz.avi'), cv2.VideoWriter_fourcc(*'MJPG'), self.VID_FPS, size)
 
         # Finding the first frame with mediapipe and getting the coordinates for nose tip and bottom nose center
@@ -477,7 +477,7 @@ class VerticalHeadNod:
                     final_dataframe = dataframe
                     final_dataframe['FrameNo'] = frame_list
                     final_dataframe['Status'] = final_dataframe.apply(lambda x: self.status_func(x['Distance']), axis=1)
-                    outfile = str(self.PATH + self.videopath.rsplit("/")[-1].split('.')[0] + '_outfile_csv.csv')
+                    outfile = str(self.PATH + self.videopath.rsplit("/")[-1].rpartition('.')[0] + '_outfile_csv.csv')
                     final_dataframe.to_csv(outfile, index=False)
 
             # Exit screen
@@ -489,9 +489,10 @@ class VerticalHeadNod:
             return self.liveness
 
 
-# if __name__ == "__main__":
-#     # Input file location of the video
-#     test = VerticalHeadNod(videopath="vhn.mp4")
-#     # test = VerticalHeadNod(videopath="Flow_cut.mp4")
-#     test.liveliness_check()
-#     print("Videoliveliness Done")
+if __name__ == "__main__":
+    # Input file location of the video
+    # test = VerticalHeadNod(videopath="speed_test_all/vhn_2.mp4")
+    test = VerticalHeadNod(videopath="resolution_test/vhn_1500_1125.mp4")
+    # test = VerticalHeadNod(videopath="Flow_cut.mp4")
+    test.liveliness_check()
+    print("Videoliveliness Done")
